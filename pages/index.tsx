@@ -1,5 +1,5 @@
 // Next.js imports
-import type { NextPage } from 'next'
+import type { NextPage } from 'next';
 // React imports
 import { useState } from 'react';
 // Axios
@@ -28,9 +28,8 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 // - - - -
 
 const Home: NextPage = () => {
-
   const theme = useTheme();
-  const notMobile = useMediaQuery(theme.breakpoints.up('sm'));  // more than 600px
+  const notMobile = useMediaQuery(theme.breakpoints.up('sm')); // more than 600px
 
   const [userName, setUserName] = useState<string>('');
   const [isUserNameTouched, setIsUserNameTouched] = useState<boolean>(false);
@@ -53,11 +52,11 @@ const Home: NextPage = () => {
     const axiosReposResponse = await axios.get(fetchReposUrl, {
       headers: {
         Accept: 'application/json',
-      }
+      },
     });
     const repositories = axiosReposResponse.data;
     setReposData(repositories);
-  }
+  };
 
   const fetchReposOrgsUser = async () => {
     try {
@@ -70,7 +69,7 @@ const Home: NextPage = () => {
       const axiosUserInfoResponse = await axios.get(fetchUserInfoUrl, {
         headers: {
           Accept: 'application/json',
-        }
+        },
       });
       const userInfo = axiosUserInfoResponse.data;
       setUserData(userInfo);
@@ -83,27 +82,24 @@ const Home: NextPage = () => {
       const axiosOrgsResponse = await axios.get(fetchOrgsUrl, {
         headers: {
           Accept: 'application/json',
-        }
+        },
       });
       const organizations = axiosOrgsResponse.data;
       setOrgsData(organizations);
 
       return;
-    }
-    catch(error: any) {
+    } catch (error: any) {
       setErr(error);
       if (axios.isAxiosError(error)) {
         // Print information to the console
         handleAxiosError(error);
+      } else {
+        console.log('Other error has occured while fetching data!');
       }
-      else {
-        console.log("Other error has occured while fetching data!");
-      }
-    }
-    finally {
+    } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   // - - - - -
 
@@ -114,30 +110,40 @@ const Home: NextPage = () => {
     }
 
     await fetchReposOrgsUser();
-  }
+  };
 
   const handlePaginationChange = async (event: React.ChangeEvent<unknown>, value: number) => {
     // Fetch another 10 repos, based on page number in value variable!
     await fetchRepos(value);
-  }
+  };
 
   // - - -
 
   if (isLoading) {
-    return <FullPageLoader />
+    return <FullPageLoader />;
   }
 
   if (err) {
     // Error message for the whole screen
   }
 
-
-
   return (
     <Container>
       {/* Flex container for input and button */}
-      <Box sx={ notMobile ? {marginTop: 5, display: 'flex', justifyContent: 'space-evenly'} : {marginTop: 5, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2}}>
-        <Box sx={ notMobile ? {width: 2/5} : {width: 4/5}}>
+      <Box
+        sx={
+          notMobile
+            ? { marginTop: 5, display: 'flex', justifyContent: 'space-evenly' }
+            : {
+                marginTop: 5,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: 2,
+              }
+        }
+      >
+        <Box sx={notMobile ? { width: 2 / 5 } : { width: 4 / 5 }}>
           <TextField
             type='text'
             variant='outlined'
@@ -150,24 +156,36 @@ const Home: NextPage = () => {
             helperText={userName === '' && isUserNameTouched && 'Username is required!'}
           />
         </Box>
-        <Box sx={ notMobile? {width: 1/5} : {width: 3/5}}>
+        <Box sx={notMobile ? { width: 1 / 5 } : { width: 3 / 5 }}>
           <Button
-            sx={{width: '100%', marginTop: '2.5%'}}
+            sx={{ width: '100%', marginTop: '2.5%' }}
             variant='outlined'
             color='success'
             size='large'
             onClick={() => handleConfirmClick()}
-            >
-              Confirm
-            </Button>
+          >
+            Confirm
+          </Button>
         </Box>
       </Box>
 
       {/* Buttons to toggle of either showing repos or orgs */}
-      <Box sx={ notMobile ? {marginTop: 6, display: 'flex', justifyContent: 'space-around'} : {marginTop: 6, display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'center'}}>
-        <Box sx={ notMobile ? {width: 1/3} : {width: 5/5}}>
+      <Box
+        sx={
+          notMobile
+            ? { marginTop: 6, display: 'flex', justifyContent: 'space-around' }
+            : {
+                marginTop: 6,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 1,
+                alignItems: 'center',
+              }
+        }
+      >
+        <Box sx={notMobile ? { width: 1 / 3 } : { width: 5 / 5 }}>
           <Button
-            sx={{height: '100%'}}
+            sx={{ height: '100%' }}
             size='large'
             fullWidth
             variant={showRepos ? 'contained' : 'outlined'}
@@ -176,7 +194,7 @@ const Home: NextPage = () => {
             Show Repositories
           </Button>
         </Box>
-        <Box sx={ notMobile ? {width: 1/3} : {width: 5/5}}>
+        <Box sx={notMobile ? { width: 1 / 3 } : { width: 5 / 5 }}>
           <Button
             size='large'
             fullWidth
@@ -190,7 +208,7 @@ const Home: NextPage = () => {
 
       {/* Handle fetching errors before possible displaying data */}
       {err && (
-        <Box sx={{marginTop: 6}}>
+        <Box sx={{ marginTop: 6 }}>
           <Typography variant='h5' component='p'>
             Error has occured while fetching data for this userName!
           </Typography>
@@ -198,30 +216,31 @@ const Home: NextPage = () => {
       )}
 
       {/* User information if no error */}
-      {!err && userData && (
-        <UserCard userData={userData} />
-      )}
+      {!err && userData && <UserCard userData={userData} />}
 
       {/* If fetched successfully, but no data and no error */}
-      {(!err && showRepos && reposData.length === 0 && wasAlreadyFetching) || (
-        !err && !showRepos && orgsData.length === 0 && wasAlreadyFetching
-      ) && (
-        <Box sx={{marginTop: 6}}>
-          <Typography variant='h5' component='p'>
-            Nothing to show!
-          </Typography>
-        </Box>
-      )}
+      {(!err && showRepos && reposData.length === 0 && wasAlreadyFetching) ||
+        (!err && !showRepos && orgsData.length === 0 && wasAlreadyFetching && (
+          <Box sx={{ marginTop: 6, marginBottom: 8 }}>
+            <Typography variant='h5' component='p'>
+              Nothing to show!
+            </Typography>
+          </Box>
+        ))}
 
       {/* Repos if toggled and no error */}
       {!err && showRepos && reposData.length !== 0 && (
-        <Box sx={{marginTop: 5, marginBottom: 6}}>
-          <Box sx={{marginBottom: 2}}>
-            <Typography variant='h4' component='h2' sx={{textDecoration: 'underline', fontStyle: 'oblique'}}>
+        <Box sx={{ marginTop: 5, marginBottom: 6 }}>
+          <Box sx={{ marginBottom: 2 }}>
+            <Typography
+              variant='h4'
+              component='h2'
+              sx={{ textDecoration: 'underline', fontStyle: 'oblique' }}
+            >
               Repositories:
             </Typography>
           </Box>
-          <Box sx={{display: 'flex', flexDirection: 'column', gap: 2}}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             {reposData.map((actualRepo: any) => (
               <RepoCard key={actualRepo.id} repoData={actualRepo} />
             ))}
@@ -231,9 +250,13 @@ const Home: NextPage = () => {
 
       {/* Orgs if toggled and no error */}
       {!err && !showRepos && orgsData.length !== 0 && (
-        <Box sx={{marginTop: 5, marginBottom: 6}}>
-          <Box sx={{marginBottom: 2}}>
-            <Typography variant='h4' component='h2' sx={{textDecoration: 'underline', fontStyle: 'oblique'}}>
+        <Box sx={{ marginTop: 5, marginBottom: 6 }}>
+          <Box sx={{ marginBottom: 2 }}>
+            <Typography
+              variant='h4'
+              component='h2'
+              sx={{ textDecoration: 'underline', fontStyle: 'oblique' }}
+            >
               Organizations:
             </Typography>
           </Box>
@@ -247,16 +270,15 @@ const Home: NextPage = () => {
 
       {/* Pagination for repositories only, if no error */}
       {!err && showRepos && userData && userData.public_repos && (
-        <Box sx={{marginBottom: 8, display: 'flex', justifyContent: 'center'}}>
+        <Box sx={{ marginBottom: 8, display: 'flex', justifyContent: 'center' }}>
           <Pagination
             count={Math.ceil(userData.public_repos / 10)}
             onChange={handlePaginationChange}
           />
         </Box>
       )}
-
     </Container>
   );
-}
+};
 
 export default Home;
