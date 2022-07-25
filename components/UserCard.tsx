@@ -23,7 +23,13 @@ export const UserCard = ({ userData }: UserCardProps) => {
       }}
     >
       <Box>
-        <Image src={userData.avatar_url} alt='user profile img' width={250} height={250} style={{ borderRadius: '50%' }} />
+        <Image
+          src={userData.avatar_url}
+          alt='user profile img'
+          width={250}
+          height={250}
+          style={{ borderRadius: '50%' }}
+        />
       </Box>
       <Box>
         <Typography variant='h6' component='p'>

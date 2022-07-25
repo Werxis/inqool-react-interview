@@ -219,7 +219,8 @@ const Home: NextPage = () => {
       {!err && userData && <UserCard userData={userData} />}
 
       {/* If fetched successfully, but no data and no error */}
-      {((!err && showRepos && reposData.length === 0 && wasAlreadyFetching) || (!err && !showRepos && orgsData.length === 0 && wasAlreadyFetching)) && (
+      {((!err && showRepos && reposData.length === 0 && wasAlreadyFetching) ||
+        (!err && !showRepos && orgsData.length === 0 && wasAlreadyFetching)) && (
         <Box sx={{ marginTop: 6, marginBottom: 8 }}>
           <Typography variant='h5' component='p'>
             Nothing to show!
@@ -268,15 +269,18 @@ const Home: NextPage = () => {
       )}
 
       {/* Pagination for repositories only, if no error */}
-      {!err && showRepos && userData !== null && userData.public_repos !== null && userData.public_repos > 0 && (
-        <Box sx={{ marginBottom: 8, display: 'flex', justifyContent: 'center' }}>
-          <Pagination
-            count={Math.ceil(userData.public_repos / 10)}
-            onChange={handlePaginationChange}
-          />
-        </Box>
-      )}
-
+      {!err &&
+        showRepos &&
+        userData !== null &&
+        userData.public_repos !== null &&
+        userData.public_repos > 0 && (
+          <Box sx={{ marginBottom: 8, display: 'flex', justifyContent: 'center' }}>
+            <Pagination
+              count={Math.ceil(userData.public_repos / 10)}
+              onChange={handlePaginationChange}
+            />
+          </Box>
+        )}
     </Container>
   );
 };
